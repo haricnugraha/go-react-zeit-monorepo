@@ -1,16 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
-function App(props) {
-  let { step, data } = props;
+export default function App() {
+  const [data, setData] = useState("Fetch API..");
 
-  if (step === 'initial') {
-    data = 'Fetch API...';
-  }
-  if (step === 'error') {
-    data = 'Error!';
-  }
+  useEffect(() => {
+    const endpoint = "/api/hello-world.go";
+
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(response => {
+        setData(response.text);
+      })
+      .catch(() => {
+        setData("Error");
+      });
+  }, []);
 
   return (
     <div className="App">
@@ -21,5 +27,3 @@ function App(props) {
     </div>
   );
 }
-
-export default App;
